@@ -1,6 +1,12 @@
 package web.models;
 
+
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "users")
@@ -9,14 +15,22 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name = "first_name")
+    @NotEmpty(message = "Name can`not be empty")
     private String firstName;
 
     @Column(name="last_name")
+    @NotEmpty(message = "Last name can`not be empty")
     private String lastName;
+
+    @Min(value = 0, message = "Age should not be less than 0")
+    @Max(value = 150, message = "Age should not be greater than 127")
     private byte age;
     private String avatar;
 
     private String city;
+
+    @Email(message = "Email is not valid")
+    @NotEmpty(message = "Email should not be empty")
     private String email;
 
     public User() {
