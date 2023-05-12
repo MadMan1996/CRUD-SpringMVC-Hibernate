@@ -9,6 +9,7 @@ import web.models.User;
 
 import java.beans.Transient;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -17,7 +18,7 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserDao userDao){
         this.userDao = userDao;
     }
-    @Transactional
+    @Transactional(readOnly = true)
     public List<User> getAllUsers() {
        return userDao.getAllUsers();
     }
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public User getById(Long id) {
         return userDao.getById(id);
     }
@@ -43,5 +44,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void updateUserProfile(User user) {
         userDao.updateUserProfile(user);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Boolean isUserExistsWithEmail(String email) {
+        return userDao.isUserExistsWithEmail(email);
     }
 }

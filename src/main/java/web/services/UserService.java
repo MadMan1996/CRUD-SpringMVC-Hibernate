@@ -3,6 +3,7 @@ package web.services;
 import web.models.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
     List<User> getAllUsers();
@@ -11,5 +12,7 @@ public interface UserService {
     User getById(Long id);
 
     void updateUserProfile(User user);
+
+   Boolean isUserExistsWithEmail(String email);
 
 }

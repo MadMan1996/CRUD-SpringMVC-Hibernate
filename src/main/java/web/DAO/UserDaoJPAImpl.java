@@ -8,7 +8,9 @@ import web.models.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -23,6 +25,7 @@ public class UserDaoJPAImpl implements UserDao {
     public UserDaoJPAImpl(EntityManagerFactory emf) {
         this.emf = emf;
     }
+
     @Override
     public List<User> getAllUsers() {
         EntityManager em = null;
@@ -40,6 +43,7 @@ public class UserDaoJPAImpl implements UserDao {
 
 
     }
+
     @Override
     public void removeById(Long id) {
         User userToRemove = em.find(User.class, id);
@@ -61,4 +65,12 @@ public class UserDaoJPAImpl implements UserDao {
     public void updateUserProfile(User user) {
         em.merge(user);
     }
+
+    @Override
+    public Boolean isUserExistsWithEmail(String email) {
+        Query isExists = em.createQuery("SELECT COUNT(u) > 0 FROM User u WHERE LOWER(u.email)=LOWER(:email)");
+        isExists.setParameter("email", email);
+        return (Boolean) isExists.getSingleResult();
+    }
+
 }
